@@ -528,6 +528,39 @@ plot
 
 ## Question: 
 **Load the `cps_clean.csv' dataset (available on Canvas). Regress income on education and interpret the coefficient.  **
+#Loading data for question 4.5 & 4.6:
+
+```{r}
+datafive<-read.csv("/cloud/project/cps_clean.csv")
+datafive
+```
+
+#Question 4.5:
+```{r}
+fourfive<-lm(inctot~edu, data=datafive)
+summary(fourfive)
+```
+
+
+Call:
+lm(formula = inctot ~ edu, data = datafive)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-105468  -31110  -11435   12596 1071106 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -64942.0     5084.1  -12.77   <2e-16 ***
+edu           8114.7      359.2   22.59   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 70930 on 4998 degrees of freedom
+Multiple R-squared:  0.09265,	Adjusted R-squared:  0.09247 
+F-statistic: 510.4 on 1 and 4998 DF,  p-value: < 2.2e-16
+
+
 
 **Answer:**
 ```{r}
@@ -539,6 +572,9 @@ summary(regincome)
 
 ```
 The coefficient 8114.7 means the income will increase bt $8114.7 if the person has one more year of education.
+The result is statistically significant. 
+
+
 
 ## Question: 
 **Add additional control variables to the regression you estimated above. How does this change your interpretation of the coefficient on education?**
@@ -546,9 +582,48 @@ The coefficient 8114.7 means the income will increase bt $8114.7 if the person h
 ```{r}
 regincome2<- lm(cps_clean$inctot~ cps_clean$edu + cps_clean$married)
 summary(regincome2)
-
 ```
+
+
+#question 4.6
+
 If the person is married, the one more year education will increase his/her income by 7793.1+15429.3 = 23222.4; if the person is not married, the one more year education will increase his/her income by 15429.3.
+=======
+
+```{r}
+foursix<-lm(inctot~edu+age+health, data=datafive)
+summary(foursix)
+```
+
+Call:
+lm(formula = inctot ~ edu + age + health, data = datafive)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-117272  -28392   -9807   12671 1077286 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -82442.91    6501.39 -12.681  < 2e-16 ***
+edu           7540.90     365.73  20.619  < 2e-16 ***
+age            953.42      81.79  11.657  < 2e-16 ***
+health       -6315.25    1003.36  -6.294 3.36e-10 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 69920 on 4996 degrees of freedom
+Multiple R-squared:  0.1185,	Adjusted R-squared:  0.118 
+F-statistic: 223.9 on 3 and 4996 DF,  p-value: < 2.2e-16
+
+
+#This shows that while education is a factor, it's importance is overstated in the original regression, and other variables such as health explain some of this bias.
+
+
+
+
+
+
+
 # Submission instructions:
 
 1) Make sure the final version of your assignment is uploaded on GitHub in both html and Rmarkdown format. 
