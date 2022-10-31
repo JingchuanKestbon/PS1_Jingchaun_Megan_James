@@ -2,13 +2,14 @@
 title: 'Problem Set 1:Getting Started Key'
 author: "Claire Duquennois"
 output:
-  pdf_document:
-    number_sections: true
   html_document:
+    number_sections: true
+  pdf_document:
     number_sections: true
 ---
 
 ```{r setup, include=FALSE}
+install.packages("knitr")
 knitr::opts_chunk$set(echo = TRUE)
 ```
 **Group Member 1: Megan Kveragas**
@@ -458,6 +459,16 @@ out$Y<-out$V1*B1+out$V2*B2+out$error
 **Write a chunk in which you regress $Y$ on $V_1$ and $V_2$. Are your estimates of $\beta_1$ and $\beta_2$ biased?**
 
 **Answer:**
+```{r}
+V_1<- out$V1
+V_2<- out$V2
+Y<- out$Y
+
+regyv1v2<- lm(Y~V_1+V_2, data=out)
+
+summary(regyv1v2)
+
+```
 
 The estimates are not biased because there are no missing variables.
 
@@ -465,6 +476,11 @@ The estimates are not biased because there are no missing variables.
 **Write a chunk in which you regress $Y$ on $V_1$ only. Is your estimate of $\beta_1$ biased?**
 
 **Answer:**
+```{r}
+regyv1<-lm(Y~V_1)
+summary(regyv1)
+
+```
 
 Our estimate of $\beta_1$ is biased upwards due to omitting $V_2$ where we know that $V_2$ is positively correlated.
 
@@ -472,6 +488,19 @@ Our estimate of $\beta_1$ is biased upwards due to omitting $V_2$ where we know 
 **Generate a new variable $Y_{adj}$ such that $Y_{adj}=Y-\beta_2*V_2$. Then regress $Y_{adj}$ on $V_1$. Is your estimate of $\beta_1$ biased? Can you explain why/why not?**
 
 **Answer:**
+```{r}
+install.packages("dplyr")
+library(dplyr)
+```
+
+```{r}
+out_data<- out %>% mutate(Y_adj = Y-6*V_2)
+
+regyv1_adj<- lm(Y_adj~V_1, data=out_data)
+
+summary(regyv1_adj)
+
+```
 
 Our estimate of $/beta_1$ is unbiased in this case as we have accounted for the effect of $V_2$ by adjusting $Y$.
 
@@ -489,6 +518,11 @@ Our estimate of $/beta_1$ is unbiased in this case as we have accounted for the 
 
 ```
 **Answer:**
+```{r}
+plot <- ggplot(out_data, aes(V_1, y=value)) + geom_point(aes(y=Y, col="Y", alpha=0.05), color="blue") + geom_point(aes(y=Y_adj,col="Yadj", alpha=0.05), color="red") + geom_smooth(method=`lm`,aes(y=Y,col="Y", alpha=0.1),color="blue") + geom_smooth(method=`lm`,aes(y=Y_adj,col="Y",alpha=0.1),color="red") + theme_bw() + labs(x="V1 value", y="Y value/Y_adj value", title="Relationship between Y and V1, Y_adj and V1")
+plot
+
+```
 
 
 
@@ -496,11 +530,25 @@ Our estimate of $/beta_1$ is unbiased in this case as we have accounted for the 
 **Load the `cps_clean.csv' dataset (available on Canvas). Regress income on education and interpret the coefficient.  **
 
 **Answer:**
+```{r}
+install.packages("readr")
+library(readr)
+cps_clean <- read_csv("cps_clean.csv")
+regincome<- lm(cps_clean$inctot~ cps_clean$edu)
+summary(regincome)
+
+```
+The coefficient 8114.7 means the income will increase bt $8114.7 if the person has one more year of education.
 
 ## Question: 
 **Add additional control variables to the regression you estimated above. How does this change your interpretation of the coefficient on education?**
 **Answer:**
+```{r}
+regincome2<- lm(cps_clean$inctot~ cps_clean$edu + cps_clean$married)
+summary(regincome2)
 
+```
+If the person is married, the one more year education will increase his/her income by 7793.1+15429.3 = 23222.4; if the person is not married, the one more year education will increase his/her income by 15429.3.
 # Submission instructions:
 
 1) Make sure the final version of your assignment is uploaded on GitHub in both html and Rmarkdown format. 
