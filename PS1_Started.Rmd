@@ -459,18 +459,21 @@ out$Y<-out$V1*B1+out$V2*B2+out$error
 
 **Answer:**
 
+The estimates are not biased because there are no missing variables.
 
 ## Question: 
 **Write a chunk in which you regress $Y$ on $V_1$ only. Is your estimate of $\beta_1$ biased?**
 
 **Answer:**
 
+Our estimate of $\beta_1$ is biased upwards due to omitting $V_2$ where we know that $V_2$ is positively correlated.
 
 ## Question: 
 **Generate a new variable $Y_{adj}$ such that $Y_{adj}=Y-\beta_2*V_2$. Then regress $Y_{adj}$ on $V_1$. Is your estimate of $\beta_1$ biased? Can you explain why/why not?**
 
 **Answer:**
 
+Our estimate of $/beta_1$ is unbiased in this case as we have accounted for the effect of $V_2$ by adjusting $Y$.
 
 ## Question: 
 **The code below generates a scatter plot and regression line for the relationship between $V_1$ and $Y$ as well as $V_1$ and $Y_{adj}$. Submit an improved visualization of this data. Hint: you will need to delete the # to get the code to run **
@@ -493,7 +496,6 @@ out$Y<-out$V1*B1+out$V2*B2+out$error
 **Load the `cps_clean.csv' dataset (available on Canvas). Regress income on education and interpret the coefficient.  **
 
 **Answer:**
-
 
 ## Question: 
 **Add additional control variables to the regression you estimated above. How does this change your interpretation of the coefficient on education?**
